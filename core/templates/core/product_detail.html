@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ product.name }} - Store{% endblock %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+            {% else %}
+                <img src="https://via.placeholder.com/500?text=No+Image" class="img-fluid rounded" alt="No image">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h3>₹{{ product.price }}</h3>
+            <p><strong>Category:</strong> {{ product.category.name }}</p>
+            <p><strong>Stock:</strong> {{ product.stock_quantity }} available</p>
+            <p>{{ product.description|linebreaks }}</p>
+            
+        </div>
+        <form action="{% url 'cart_add' product.id %}" method="post" class="mt-3">
+    {% csrf_token %}
+        <div class="mt-4">
+    <h4 class="mb-3">Add to Cart</h4>
+    <form action="{% url 'cart_add' product.id %}" method="post" id="add-to-cart-form">
+        {% csrf_token %}
+        <div class="input-group mb-3 w-50">
+            <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">-</button>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock_quantity }}" class="form-control text-center" readonly>
+            <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">+</button>
+        </div>
+        <p class="mb-3">Total: <strong id="total-price">₹{{ product.price }}</strong></p>
+        <button type="submit" class="btn btn-success btn-lg w-100" {% if product.stock_quantity == 0 %}disabled{% endif %}>
+            {% if product.stock_quantity > 0 %}Add to Cart{% else %}Out of Stock{% endif %}
+        </button>
+    </form>
+</div>
+
+<script>
+    function changeQuantity(delta) {
+        const input = document.getElementById('quantity');
+        let value = parseInt(input.value) + delta;
+        if (value < 1) value = 1;
+        if (value > {{ product.stock_quantity }}) value = {{ product.stock_quantity }};
+        input.value = value;
+        updateTotal();
+    }
+
+    function updateTotal() {
+        const price = {{ product.price }};
+        const qty = parseInt(document.getElementById('quantity').value);
+        document.getElementById('total-price').textContent = '₹' + (price * qty).toFixed(2);
+    }
+
+    document.getElementById('quantity').addEventListener('input', updateTotal);
+</script>
+</form>
+    </div>
+{% endblock %}

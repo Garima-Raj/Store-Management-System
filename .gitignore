@@ -1,0 +1,32 @@
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.db
+*.sqlite3
+*.log
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Media & static (don't upload user-uploaded files or collected static)
+media/
+staticfiles/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS junk
+.DS_Store
+
+# Windows junk
+Thumbs.db
+ehthumbs.db

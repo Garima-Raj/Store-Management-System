@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block content %}
+    <div class="text-center mt-5">
+        <h1 class="text-success">Thank You!</h1>
+        <h3>Your order has been placed successfully.</h3>
+        <p>Order ID: <strong>#{{ order.id }}</strong></p>
+        <p>Total Amount: <strong>₹{{ order.total_amount }}</strong></p>
+        <p>Status: <strong>{{ order.status|capfirst }}</strong></p>
+        <p>We will process your order soon. (Demo — Cash on Delivery)</p>
+
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Continue Shopping</a>
+        <a href="{% url 'cart_detail' %}" class="btn btn-outline-secondary mt-3 ms-2">View Cart (should be empty)</a>
+    </div>
+{% endblock %}

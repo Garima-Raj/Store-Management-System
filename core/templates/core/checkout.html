@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+    <h1>Checkout</h1>
+
+    <h3>Order Summary</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.total_price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-end mb-4">
+        <h4>Grand Total: ₹{{ total }}</h4>
+    </div>
+
+    <h3>Shipping & Payment Details</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.shipping_address.label_tag }}
+        {{ form.shipping_address }}
+        {{ form.shipping_address.errors }}
+
+        {{ form.notes.label_tag }}
+        {{ form.notes }}
+        {{ form.notes.errors }}
+
+        {{ form.total_amount }}  <!-- hidden -->
+
+        <button type="submit" class="btn btn-success btn-lg w-100 mt-4">
+            Place Order (Cash on Delivery)
+        </button>
+    </form>
+
+    <p class="text-muted mt-3 text-center">
+        This is a demo — no real payment processed.
+    </p>
+{% endblock %}
